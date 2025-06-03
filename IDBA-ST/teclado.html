@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="./teclado/js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-788PHS7H0Z');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content=".">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="">
+    <link rel="stylesheet" href="./teclado/bootstrap.min.css">
+    <link rel="stylesheet" href="./teclado/fontawesome.min.css">
+    <link rel="stylesheet" href="./teclado/style.css">
+    <script data-ad-client="ca-pub-3037373499452828" async src="./teclado/f.txt"></script>
+    <link rel="icon" href="avell.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="avell.ico" type="image/x-icon">
+    <title>Avell KeyTest Pro</title>
+    <style>
+        /* ESTILOS DAS TECLAS */
+        .key {
+            cursor: not-allowed; /* Cursor mostra que não pode clicar */
+            transition: background-color 0.3s, color 0.3s; /* Animação suave para mudanças de cor */
+        }
+        
+        /* TECLA QUANDO TOTALMENTE PRESSIONADA (5 VEZES) - COR VERDE */
+        .pressed {
+            background-color: green; /* Fundo verde quando tecla é aprovada */
+            color: white; /* Texto branco para contraste */
+        }
+        
+        /* TECLA SENDO PRESSIONADA NO MOMENTO - COR AMARELA */
+        .pressing {
+            background-color: yellow; /* Fundo amarelo durante o pressionamento */
+            color: black; /* Texto preto para contraste */
+        }
+        
+        /* TECLA ESPECIAL QUE JÁ INICIA VERDE (NÃO ACIONÁVEL) */
+        .already-approved {
+            background-color: green !important; /* Força o fundo verde desde o início */
+            color: white !important; /* Força o texto branco */
+        }
+        
+        /* CONTAINER PRINCIPAL DO TECLADO - CENTRALIZAÇÃO */
+        .keyboard-container {
+            display: flex; /* Layout flexível */
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center; /* Centraliza verticalmente */
+            min-height: 60vh; /* Ocupa 60% da altura da tela */
+            padding: 20px; /* Espaçamento interno */
+        }
+        
+        /* ESTE É O FUNDO PRETO ATRÁS DAS TECLAS */
+        .keyboard {
+            background-color: #000; /* ← ESTE É O FUNDO PRETO que você perguntou! */
+            padding: 20px; /* Espaçamento interno ao redor das teclas */
+            border-radius: 10px; /* Cantos arredondados */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Sombra escura ao redor */
+            display: inline-block; /* Comportamento de bloco inline */
+            width: fit-content; /* Largura ajusta ao conteúdo */
+            max-width: 100%; /* Não ultrapassa a largura da tela */
+            min-height: auto; /* Altura mínima automática */
+            padding-bottom: 520px; /* Espaçamento extra na parte inferior */
+        }
+        
+        /* RODAPÉ FIXO NA PARTE INFERIOR */
+        .footer {
+            display: flex; /* Layout flexível */
+            align-items: center; /* Alinha itens ao centro */
+            justify-content: center; /* Centraliza horizontalmente */
+            background-color: #000; /* Fundo preto */
+            color: white; /* Texto branco */
+            padding: 10px 0; /* Espaçamento vertical */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3); /* Sombra na parte superior */
+            width: 100%; /* Largura total */
+            position: fixed; /* Posição fixa na tela */
+            bottom: 0; /* Colado na parte inferior */
+        }
+        
+        /* IMAGEM NO RODAPÉ */
+        .footer img {
+            height: 50px; /* Altura fixa da imagem */
+            margin-left: 20px; /* Margem à esquerda */
+        }
+        
+        /* CABEÇALHO COM LOGO E INFORMAÇÕES */
+        .header {
+            display: flex; /* Layout flexível */
+            align-items: center; /* Alinha itens ao centro */
+            justify-content: space-between; /* Distribui espaço entre elementos */
+            position: absolute; /* Posição absoluta */
+            top: 10px; /* 10px do topo */
+            left: 10px; /* 10px da esquerda */
+            width: 100%; /* Largura total */
+            padding: 0 20px; /* Espaçamento horizontal */
+            box-sizing: border-box; /* Inclui padding no cálculo da largura */
+        }
+        
+        /* LOGO NO CABEÇALHO */
+        .header img {
+            width: 200px; /* Largura fixa */
+            height: auto; /* Altura proporcional */
+        }
+        
+        /* TEXTO DE AVISO VERMELHO */
+        .subtitle {
+            font-size: 18px; /* Tamanho da fonte */
+            font-weight: bold; /* Texto em negrito */
+            color: red; /* Cor vermelha */
+            margin-left: 20px; /* Margem à esquerda */
+            display: flex; /* Layout flexível */
+            align-items: center; /* Alinha ao centro */
+        }
+        
+        /* BOTÃO DE VOLTAR */
+        .back-button {
+            background-color: #000; /* Fundo preto */
+            color: #fff; /* Texto branco */
+            border: none; /* Sem borda */
+            padding: 10px 20px; /* Espaçamento interno */
+            border-radius: 5px; /* Cantos arredondados */
+            cursor: pointer; /* Cursor de clique */
+        }
+        
+        /* 🔧 CORREÇÕES DE ALINHAMENTO - AQUI VOCÊ AJUSTA O ENTER DO MEIO */
+        .enter2 {
+            margin-top: 0px; /* ← MUDE AQUI PARA AJUSTAR O ALINHAMENTO VERTICAL */
+			width: 78px !important;
+        }
+		/* ✅ ADICIONE ESTA NOVA REGRA PARA A PARTE DE CIMA DO ENTER */
+		#Enter {
+			width: 98px !important;  /* ← ESTA É A PARTE DE CIMA que estava faltando! */
+			min-width: 98px !important;
+		}
+        .plus2 {
+            margin-top: -1px; /* Ajuste fino de posição */
+        }
+        
+        /* TAMANHO CUSTOMIZADO DO SHIFT DIREITO */
+        .shift-small {
+            width: 194px !important; /* Força largura específica */
+            min-width: 194px !important; /* Força largura mínima */
+        }
+        
+        /* TAMANHO CUSTOMIZADO DA TECLA SLASH */
+        .slash-small {
+            width: 57px !important; /* Força largura específica */
+            min-width: 57px !important; /* Força largura mínima */
+        }
+        
+        /* ESPAÇOS VAZIOS PARA LAYOUT DAS SETAS */
+        .empty-space {
+            width: 70px; /* Largura do espaço vazio */
+            height: 70px; /* Altura do espaço vazio */
+            background: transparent; /* Fundo transparente */
+            border: none; /* Sem borda */
+            margin: 2px; /* Margem pequena */
+        }
+        
+        /* CONTAINER ESPECÍFICO PARA AS SETAS EM FORMATO T */
+        .arrows-container {
+            position: relative; /* Posição relativa */
+            display: flex; /* Layout flexível */
+            flex-direction: column; /* Direção vertical */
+            align-items: center; /* Centraliza horizontalmente */
+            margin-left: auto; /* Margem automática à esquerda */
+            margin-right: -580px; /* Posicionamento específico */
+        }
+        
+        /* LINHA SUPERIOR DAS SETAS (SÓ A SETA DE CIMA) */
+        .arrow-top-row {
+            display: flex; /* Layout flexível */
+            justify-content: center; /* Centraliza */
+            margin-bottom: 2px; /* Margem inferior */
+        }
+        
+        /* LINHA INFERIOR DAS SETAS (ESQUERDA, BAIXO, DIREITA) */
+        .arrow-bottom-row {
+            display: flex; /* Layout flexível */
+            gap: 2px; /* Espaço entre elementos */
+            align-items: center; /* Alinha ao centro */
+        }
+        
+        /* MODAL DE ALERTA - OVERLAY ESCURO */
+        .alert-modal {
+            display: none; /* Inicialmente oculto */
+            position: fixed; /* Posição fixa na tela */
+            top: 0; /* Topo da tela */
+            left: 0; /* Esquerda da tela */
+            width: 100%; /* Largura total */
+            height: 100%; /* Altura total */
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo preto semi-transparente */
+            z-index: 9999; /* Camada superior */
+        }
+        
+        /* CAIXA DE ALERTA CENTRAL */
+        .alert-box {
+            position: absolute; /* Posição absoluta */
+            top: 50%; /* 50% do topo */
+            left: 50%; /* 50% da esquerda */
+            transform: translate(-50%, -50%); /* Centraliza perfeitamente */
+            background-color: white; /* Fundo branco */
+            padding: 40px; /* Espaçamento interno */
+            border-radius: 10px; /* Cantos arredondados */
+            text-align: center; /* Texto centralizado */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Sombra */
+        }
+        
+        /* TÍTULO DO ALERTA */
+        .alert-box h2 {
+            color: green; /* Cor verde */
+            font-size: 28px; /* Tamanho da fonte */
+            margin: 0; /* Sem margem */
+            font-weight: bold; /* Negrito */
+        }
+
+        /* ✅ TECLA 0 INS AGORA OCUPA DOIS ESPAÇOS */
+        .numpad0-custom {
+            width: 148px !important; /* ← AJUSTE AQUI O TAMANHO DA TECLA INS */
+            min-width: 148px !important; /* ← AJUSTE AQUI O TAMANHO DA TECLA INS */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- Imagem da logo -->
+        <img src="./teclado/logoavell.png" alt="Descrição da Imagem">
+        <!-- Mensagem centralizada com ícones de exclamação -->
+        <span class="subtitle">⚠️ Cada tecla deve ser pressionada cinco vezes para completar o teste. ⚠️</span>
+        <!-- Botão de voltar -->
+        <button class="back-button" onclick="window.history.back();">
+            Voltar
+        </button>
+    </div>
+    <div class="todo">
+        <div class="row">
+            <br><br><br><br><br>
+            <div class="col-md-8"></div>
+        </div>
+        <div class="row alert-screen">
+            <div class="col-12">
+                <p><i class="fas fa-exclamation-triangle"></i> Desculpe! Não podemos executar o teste em dispositivos móveis. Para correto funcionamento, recomendamos usar um PC ou notebook.</p>
+            </div>
+        </div>
+        <div class="keyboard-container">
+            <div class="keyboard">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex flex-row bd-highlight">
+                            <div id="Escape" class="key function space4">Esc</div>
+                            <div id="F1" class="key function">F1</div>
+                            <div id="F2" class="key function">F2</div>
+                            <div id="F3" class="key function">F3</div>
+                            <div id="F4" class="key function">F4</div>
+                            <div id="F5" class="key function">F5</div>
+                            <div id="F6" class="key function">F6</div>
+                            <div id="F7" class="key function">F7</div>
+                            <div id="F8" class="key function">F8</div>
+                            <div id="F9" class="key function">F9</div>
+                            <div id="F10" class="key function">F10</div>
+                            <div id="F11" class="key function">F11</div>
+                            <div id="F12" class="key function">F12</div>
+                            <!-- ESTA TECLA AGORA JÁ INICIA VERDE (NÃO ACIONÁVEL) -->
+                            <div id="" class="key function small already-approved">⟳ Sc<br>☎︎</div>
+                            <div id="PrintScreen" class="key function small">PrtSc</div>
+                            <div id="Delete" class="key function small">Del</div>
+                            <div id="Home" class="key function2 small">Home</div>
+                            <div id="PageUp" class="key function2 small">Pgup</div>
+                            <div id="PageDown" class="key function2 small">Pgdn<br>Break</div>
+                            <div id="End" class="key function2 small">End</div>
+                        </div>
+                        <!--END FUNCTION KEYS -->
+                        <div class="d-flex flex-row bd-highlight">
+                            <div id="Backquote" class="key">`</div>
+                            <div id="Digit1" class="key num">1</div>
+                            <div id="Digit2" class="key num">2</div>
+                            <div id="Digit3" class="key num">3</div>
+                            <div id="Digit4" class="key num">4</div>
+                            <div id="Digit5" class="key num">5</div>
+                            <div id="Digit6" class="key num">6</div>
+                            <div id="Digit7" class="key num">7</div>
+                            <div id="Digit8" class="key num">8</div>
+                            <div id="Digit9" class="key num">9</div>
+                            <div id="Digit0" class="key num">0</div>
+                            <div id="Minus" class="key num">-</div>
+                            <div id="Equal" class="key num">=</div>
+                            <div id="Backspace" class="key backspace"> ← Backspace</div>
+                            <div id="NumLock" class="numeric-key numeric-nl">Num</div>
+                            <div id="NumpadDivide" class="numeric-key">/</div>
+                            <div id="NumpadMultiply" class="numeric-key">*</div>
+                            <div id="NumpadSubtract" class="numeric-key">-</div>
+                        </div>
+                        <!--END NUMBER KEYS -->
+                        <div class="d-flex flex-row bd-highlight">
+                            <div id="Tab" class="key tab">Tab</div>
+                            <div id="KeyQ" class="key">Q</div>
+                            <div id="KeyW" class="key">W</div>
+                            <div id="KeyE" class="key">E</div>
+                            <div id="KeyR" class="key">R</div>
+                            <div id="KeyT" class="key">T</div>
+                            <div id="KeyY" class="key">Y</div>
+                            <div id="KeyU" class="key">U</div>
+                            <div id="KeyI" class="key">I</div>
+                            <div id="KeyO" class="key">O</div>
+                            <div id="KeyP" class="key">P</div>
+                            <div id="BracketLeft" class="key num">´<br>`</div>
+                            <div id="BracketRight" class="key num">[<br>{</div>
+                            <div id="Enter" class="key enter">↵ Enter</div>
+                            <div id="Numpad7" class="numeric-key">7 <br><span class="numeric-special-key">Home</span></div>
+                            <div id="Numpad8" class="numeric-key">8 <br> &uarr;</div>
+                            <div id="Numpad9" class="numeric-key">9 <br> <span class="numeric-special-key">Pg Up </span></div>
+                            <div id="NumpadAdd" class="key plus1">+</div>
+                        </div>
+                        <div class="d-flex flex-row bd-highlight">
+                            <div id="CapsLock" class="key caps">Fixa</div>
+                            <div id="KeyA" class="key">A</div>
+                            <div id="KeyS" class="key">S</div>
+                            <div id="KeyD" class="key">D</div>
+                            <div id="KeyF" class="key">F</div>
+                            <div id="KeyG" class="key">G</div>
+                            <div id="KeyH" class="key">H</div>
+                            <div id="KeyJ" class="key">J</div>
+                            <div id="KeyK" class="key">K</div>
+                            <div id="KeyL" class="key">L</div>
+                            <div id="Semicolon" class="key">Ç</div>
+                            <div id="Quote" class="key num">^<br>~</div>
+                            <div id="Backslash" class="key num">]<br>}º</div>
+                            <div id="Enter2" class="key enter2"></div>
+                            <div id="Numpad4" class="numeric-key">4 <br> &larr;</div>
+                            <div id="Numpad5" class="numeric-key">5</div>
+                            <div id="Numpad6" class="numeric-key">6 <br> &rarr;</div>
+                            <div id="NumpadAdd2" class="key plus2"></div>
+                        </div>
+                        <div class="d-flex flex-row bd-highlight">
+                            <div id="ShiftLeft" class="key shift1">⇧</div>
+                            <div id="IntlBackslash" class="key">\</div>
+                            <div id="KeyZ" class="key">Z</div>
+                            <div id="KeyX" class="key">X</div>
+                            <div id="KeyC" class="key">C</div>
+                            <div id="KeyV" class="key">V</div>
+                            <div id="KeyB" class="key">B</div>
+                            <div id="KeyN" class="key">N</div>
+                            <div id="KeyM" class="key">M</div>
+                            <div id="Comma" class="key">&lt; <br>,</div>
+                            <div id="Period" class="key">&gt;<br>.</div>
+                            <div id="Slash" class="key Slash">:<br>;</div>
+                            <div id="ShiftRight" class="key shift-small">⇧</div>
+                            <div id="Numpad1" class="numeric-key">1 <br> <span class="numeric-special-key">End</span></div>
+                            <div id="Numpad2" class="numeric-key">2 <br> &darr;</div>
+                            <div id="Numpad3" class="numeric-key">3 <br> <span class="numeric-special-key">Pg Dn</span></div>
+                            <div id="NumpadEnter" class="key plus1">Enter</div>
+                        </div>
+                        <!-- Linha com Ctrl direito, espaço, seta cima (MANTÉM A POSIÇÃO) -->
+                        <div class="d-flex flex-row bd-highlight">
+                            <div id="ControlLeft" class="key modify-keys">Ctrl</div>
+                            <div id="AudioVolumeMute" class="key modify-keys">Fn</div>
+                            <div id="MetaLeft" class="key modify-keys">Win</div>
+                            <div id="AltLeft" class="key modify-keys">Alt</div>
+                            <div id="Space" class="key space"></div>
+                            <div id="AltRight" class="key modify-keys">AltGr</div>
+                         <!-- <div id="ContextMenu" class="key modify-keys">&#9776;</div> -->
+                            <div id="ControlRight" class="key2">Ctrl</div>
+                            <div class="empty-space"></div>
+                            <div id="ArrowUp" class="arrows-key">&uarr;</div>
+                            <div class="empty-space"></div>
+                            <!-- ✅ AGORA É UMA TECLA SÓ OCUPANDO DOIS ESPAÇOS -->
+                            <div id="Numpad0" class="numeric-key numpad0-custom">0 <br> <span class="numeric-special-key">INS</span></div>
+                            <div id="NumpadDecimal" class="numeric-key">,<br> <span class="numeric-special-key">DEL</span></div>
+                            <div id="NumpadEnter2" class="key plus2"></div>
+                        </div>
+                        
+                        <!-- NOVO: Container das setas em formato T perfeito -->
+                        <div class="arrows-container">
+                            <!-- Linha das setas inferiores (esquerda, baixo, direita) -->
+                            <div class="arrow-bottom-row">
+                                <div id="ArrowLeft" class="arrows-key">&larr;</div>
+                                <div id="ArrowDown" class="arrows-key">&darr;</div>
+                                <div id="ArrowRight" class="arrows-key">&rarr;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Caixa de Alerta Simples -->
+    <div id="alert-modal" class="alert-modal">
+        <div class="alert-box">
+            <h2>TECLADO APROVADO</h2>
+        </div>
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 Inovação e Desenvolvimento</p>
+        <img src="avell.ico" alt="Imagem da Nota de Rodapé">
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const keys = document.querySelectorAll('.key, .numeric-key, .arrows-key, .key2');
+            const keyPressCounts = {};
+            const maxPresses = 5;
+            // Variáveis para controle de AltGr
+            let isAltGrPressed = false;
+            let lastKeyTime = 0;
+            let printScreenPressCount = 0;
+            // Mapeamento de teclas duplas (uma tecla física que ativa dois elementos visuais)
+            const doubleKeys = {
+                'Enter': ['Enter', 'Enter2'],
+                'NumpadEnter': ['NumpadEnter', 'NumpadEnter2'],
+                'NumpadAdd': ['NumpadAdd', 'NumpadAdd2']
+            };
+            keys.forEach(key => {
+                if (key.id) keyPressCounts[key.id] = 0;
+                key.addEventListener('click', (e) => e.preventDefault());
+            });
+            document.addEventListener('keydown', (event) => {
+                const currentTime = Date.now();
+                // TRATAMENTO ESPECIAL PARA PRINTSCREEN - AGORA PRECISA DE 5 VEZES
+                if (event.code === 'PrintScreen') {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+                    printScreenPressCount++;
+                    const keyElement = document.getElementById('PrintScreen');
+                    if (keyElement) {
+                        keyElement.classList.add('pressing');
+                        if (printScreenPressCount >= maxPresses) {
+                            keyElement.classList.add('pressed');
+                            keyPressCounts['PrintScreen'] = maxPresses;
+                        } else {
+                            keyPressCounts['PrintScreen'] = printScreenPressCount;
+                        }
+                    }
+                    checkAllKeysApproved();
+                    return false;
+                }
+                // TRATAMENTO ESPECIAL PARA ALTGR - EVITA ATIVAR AMBOS OS CTRL
+                if (event.code === 'AltRight' && event.location === 2) {
+                    event.preventDefault();
+                    isAltGrPressed = true;
+                    lastKeyTime = currentTime;
+                    activateKey('AltRight');
+                    checkAllKeysApproved();
+                    return false;
+                }
+                // BLOQUEAR CTRL ESQUERDO E DIREITO QUANDO ALTGR É PRESSIONADO
+                if ((event.code === 'ControlLeft' || event.code === 'ControlRight') &&
+                    isAltGrPressed && (currentTime - lastKeyTime) < 100) {
+                    event.preventDefault();
+                    return false;
+                }
+                // TRATAMENTO ESPECIAL PARA CTRL DIREITO INDIVIDUAL
+                if (event.code === 'ControlRight' && !isAltGrPressed) {
+                    event.preventDefault();
+                    activateKey('ControlRight');
+                    checkAllKeysApproved();
+                    return false;
+                }
+                // TRATAMENTO ESPECIAL PARA CTRL ESQUERDO INDIVIDUAL
+                if (event.code === 'ControlLeft' && !isAltGrPressed) {
+                    event.preventDefault();
+                    activateKey('ControlLeft');
+                    checkAllKeysApproved();
+                    return false;
+                }
+                // RESTO DAS TECLAS NORMAIS
+                event.preventDefault();
+                const keyID = event.code;
+                let keysToActivate = [keyID];
+                if (doubleKeys[keyID]) {
+                    keysToActivate = doubleKeys[keyID];
+                }
+                keysToActivate.forEach(currentKeyID => {
+                    activateKey(currentKeyID);
+                });
+                checkAllKeysApproved();
+            }, true);
+            document.addEventListener('keyup', (event) => {
+                // PRINTSCREEN
+                if (event.code === 'PrintScreen') {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+                    const keyElement = document.getElementById('PrintScreen');
+                    if (keyElement) {
+                        keyElement.classList.remove('pressing');
+                    }
+                    return false;
+                }
+                // ALTGR
+                if (event.code === 'AltRight') {
+                    event.preventDefault();
+                    isAltGrPressed = false;
+                    const keyElement = document.getElementById('AltRight');
+                    if (keyElement) {
+                        keyElement.classList.remove('pressing');
+                    }
+                    return false;
+                }
+                // CTRL ESQUERDO E DIREITO
+                if (event.code === 'ControlRight' || event.code === 'ControlLeft') {
+                    event.preventDefault();
+                    const keyElement = document.getElementById(event.code);
+                    if (keyElement) {
+                        keyElement.classList.remove('pressing');
+                    }
+                    return false;
+                }
+                event.preventDefault();
+                const keyID = event.code;
+                let keysToActivate = [keyID];
+                if (doubleKeys[keyID]) {
+                    keysToActivate = doubleKeys[keyID];
+                }
+                keysToActivate.forEach(currentKeyID => {
+                    const keyElement = document.getElementById(currentKeyID);
+                    if (keyElement) {
+                        keyElement.classList.remove('pressing');
+                    }
+                });
+            }, true);
+            // DETECÇÃO BACKUP PARA PRINTSCREEN - AGORA COM CONTAGEM CORRETA
+            window.addEventListener('blur', () => {
+                setTimeout(() => {
+                    const keyElement = document.getElementById('PrintScreen');
+                    if (keyElement && keyPressCounts['PrintScreen'] < maxPresses) {
+                        printScreenPressCount++;
+                        keyElement.classList.add('pressing');
+                        if (printScreenPressCount >= maxPresses) {
+                            keyElement.classList.add('pressed');
+                            keyPressCounts['PrintScreen'] = maxPresses;
+                        } else {
+                            keyPressCounts['PrintScreen'] = printScreenPressCount;
+                        }
+                        checkAllKeysApproved();
+                    }
+                }, 50);
+            });
+            // FUNÇÃO AUXILIAR PARA ATIVAR TECLAS
+            function activateKey(keyID) {
+                const keyElement = document.getElementById(keyID);
+                if (keyElement) {
+                    if (keyPressCounts[keyID] < maxPresses) {
+                        keyElement.classList.add('pressing');
+                        if (keyPressCounts[keyID] === maxPresses - 1) {
+                            keyElement.classList.add('pressed');
+                            keyPressCounts[keyID]++;
+                        } else {
+                            keyPressCounts[keyID]++;
+                        }
+                }
+                    }
+            }
+            function checkAllKeysApproved() {
+                const allApproved = Array.from(keys).every(key =>
+                    key.id && (key.classList.contains('pressed') || key.classList.contains('already-approved'))
+                );
+                if (allApproved) {
+                    // Exibe a caixa de alerta simples
+                    document.getElementById('alert-modal').style.display = 'block';
+                }
+            }
+            // Fechar a caixa de alerta ao clicar nela
+            document.getElementById('alert-modal').addEventListener('click', function() {
+                this.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
