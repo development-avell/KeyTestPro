@@ -131,13 +131,13 @@
         /* 🔧 CORREÇÕES DE ALINHAMENTO - AQUI VOCÊ AJUSTA O ENTER DO MEIO */
         .enter2 {
             margin-top: 0px; /* ← MUDE AQUI PARA AJUSTAR O ALINHAMENTO VERTICAL */
-			width: 78px !important;
+            width: 78px !important;
         }
-		/* ✅ ADICIONE ESTA NOVA REGRA PARA A PARTE DE CIMA DO ENTER */
-		#Enter {
-			width: 98px !important;  /* ← ESTA É A PARTE DE CIMA que estava faltando! */
-			min-width: 98px !important;
-		}
+        /* ✅ ADICIONE ESTA NOVA REGRA PARA A PARTE DE CIMA DO ENTER */
+        #Enter {
+            width: 98px !important; /* ← ESTA É A PARTE DE CIMA que estava faltando! */
+            min-width: 98px !important;
+        }
         .plus2 {
             margin-top: -1px; /* Ajuste fino de posição */
         }
@@ -187,37 +187,47 @@
             align-items: center; /* Alinha ao centro */
         }
         
-        /* MODAL DE ALERTA - OVERLAY ESCURO */
+        /* ✅ MODAL DE SUCESSO - OVERLAY ESCURO PARA COBRIR TODA A TELA */
         .alert-modal {
             display: none; /* Inicialmente oculto */
             position: fixed; /* Posição fixa na tela */
             top: 0; /* Topo da tela */
             left: 0; /* Esquerda da tela */
-            width: 100%; /* Largura total */
-            height: 100%; /* Altura total */
-            background-color: rgba(0, 0, 0, 0.7); /* Fundo preto semi-transparente */
-            z-index: 9999; /* Camada superior */
+            width: 100vw; /* Largura total da viewport */
+            height: 100vh; /* Altura total da viewport */
+            background-color: rgba(0, 0, 0, 0.8); /* Fundo preto semi-transparente */
+            z-index: 99999; /* Camada mais superior possível */
+            display: flex; /* Usa flexbox para centralização */
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center; /* Centraliza verticalmente */
         }
         
-        /* CAIXA DE ALERTA CENTRAL */
+        /* ✅ CAIXA DE SUCESSO CENTRALIZADA PERFEITAMENTE */
         .alert-box {
-            position: absolute; /* Posição absoluta */
-            top: 50%; /* 50% do topo */
-            left: 50%; /* 50% da esquerda */
-            transform: translate(-50%, -50%); /* Centraliza perfeitamente */
             background-color: white; /* Fundo branco */
-            padding: 40px; /* Espaçamento interno */
-            border-radius: 10px; /* Cantos arredondados */
+            padding: 60px 80px; /* Espaçamento interno generoso */
+            border-radius: 15px; /* Cantos bem arredondados */
             text-align: center; /* Texto centralizado */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Sombra */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra forte */
+            border: 3px solid green; /* Borda verde */
+            animation: bounce 0.6s ease-out; /* Animação de entrada */
         }
         
-        /* TÍTULO DO ALERTA */
+        /* ✅ ANIMAÇÃO DE ENTRADA DA CAIXA DE SUCESSO */
+        @keyframes bounce {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* ✅ TÍTULO DO SUCESSO COM ESTILO APRIMORADO */
         .alert-box h2 {
             color: green; /* Cor verde */
-            font-size: 28px; /* Tamanho da fonte */
+            font-size: 36px; /* Tamanho da fonte maior */
             margin: 0; /* Sem margem */
             font-weight: bold; /* Negrito */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil no texto */
+            font-family: Arial, sans-serif; /* Fonte padrão */
         }
 
         /* ✅ TECLA 0 INS AGORA OCUPA DOIS ESPAÇOS */
@@ -226,6 +236,10 @@
             min-width: 148px !important; /* ← AJUSTE AQUI O TAMANHO DA TECLA INS */
         }
         
+        /* ✅ ESCONDER O MODAL INICIALMENTE */
+        .alert-modal:not([style*="display: flex"]) {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -390,187 +404,210 @@
             </div>
         </div>
     </div>
-    <!-- Caixa de Alerta Simples -->
+    
+    <!-- ✅ MODAL DE SUCESSO CENTRALIZADO PERFEITAMENTE -->
     <div id="alert-modal" class="alert-modal">
         <div class="alert-box">
             <h2>TECLADO APROVADO</h2>
         </div>
     </div>
+    
     <div class="footer">
         <p>&copy; 2025 Inovação e Desenvolvimento</p>
         <img src="avell.ico" alt="Imagem da Nota de Rodapé">
     </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            const keys = document.querySelectorAll('.key, .numeric-key, .arrows-key, .key2');
-            const keyPressCounts = {};
-            const maxPresses = 5;
-            // Variáveis para controle de AltGr
-            let isAltGrPressed = false;
-            let lastKeyTime = 0;
-            let printScreenPressCount = 0;
-            // Mapeamento de teclas duplas (uma tecla física que ativa dois elementos visuais)
-            const doubleKeys = {
-                'Enter': ['Enter', 'Enter2'],
-                'NumpadEnter': ['NumpadEnter', 'NumpadEnter2'],
-                'NumpadAdd': ['NumpadAdd', 'NumpadAdd2']
-            };
-            keys.forEach(key => {
-                if (key.id) keyPressCounts[key.id] = 0;
-                key.addEventListener('click', (e) => e.preventDefault());
-            });
-            document.addEventListener('keydown', (event) => {
-                const currentTime = Date.now();
-                // TRATAMENTO ESPECIAL PARA PRINTSCREEN - AGORA PRECISA DE 5 VEZES
-                if (event.code === 'PrintScreen') {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    event.stopImmediatePropagation();
-                    printScreenPressCount++;
-                    const keyElement = document.getElementById('PrintScreen');
-                    if (keyElement) {
-                        keyElement.classList.add('pressing');
-                        if (printScreenPressCount >= maxPresses) {
-                            keyElement.classList.add('pressed');
-                            keyPressCounts['PrintScreen'] = maxPresses;
-                        } else {
-                            keyPressCounts['PrintScreen'] = printScreenPressCount;
-                        }
-                    }
-                    checkAllKeysApproved();
-                    return false;
-                }
-                // TRATAMENTO ESPECIAL PARA ALTGR - EVITA ATIVAR AMBOS OS CTRL
-                if (event.code === 'AltRight' && event.location === 2) {
-                    event.preventDefault();
-                    isAltGrPressed = true;
-                    lastKeyTime = currentTime;
-                    activateKey('AltRight');
-                    checkAllKeysApproved();
-                    return false;
-                }
-                // BLOQUEAR CTRL ESQUERDO E DIREITO QUANDO ALTGR É PRESSIONADO
-                if ((event.code === 'ControlLeft' || event.code === 'ControlRight') &&
-                    isAltGrPressed && (currentTime - lastKeyTime) < 100) {
-                    event.preventDefault();
-                    return false;
-                }
-                // TRATAMENTO ESPECIAL PARA CTRL DIREITO INDIVIDUAL
-                if (event.code === 'ControlRight' && !isAltGrPressed) {
-                    event.preventDefault();
-                    activateKey('ControlRight');
-                    checkAllKeysApproved();
-                    return false;
-                }
-                // TRATAMENTO ESPECIAL PARA CTRL ESQUERDO INDIVIDUAL
-                if (event.code === 'ControlLeft' && !isAltGrPressed) {
-                    event.preventDefault();
-                    activateKey('ControlLeft');
-                    checkAllKeysApproved();
-                    return false;
-                }
-                // RESTO DAS TECLAS NORMAIS
-                event.preventDefault();
-                const keyID = event.code;
-                let keysToActivate = [keyID];
-                if (doubleKeys[keyID]) {
-                    keysToActivate = doubleKeys[keyID];
-                }
-                keysToActivate.forEach(currentKeyID => {
-                    activateKey(currentKeyID);
-                });
-                checkAllKeysApproved();
-            }, true);
-            document.addEventListener('keyup', (event) => {
-                // PRINTSCREEN
-                if (event.code === 'PrintScreen') {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    event.stopImmediatePropagation();
-                    const keyElement = document.getElementById('PrintScreen');
-                    if (keyElement) {
-                        keyElement.classList.remove('pressing');
-                    }
-                    return false;
-                }
-                // ALTGR
-                if (event.code === 'AltRight') {
-                    event.preventDefault();
-                    isAltGrPressed = false;
-                    const keyElement = document.getElementById('AltRight');
-                    if (keyElement) {
-                        keyElement.classList.remove('pressing');
-                    }
-                    return false;
-                }
-                // CTRL ESQUERDO E DIREITO
-                if (event.code === 'ControlRight' || event.code === 'ControlLeft') {
-                    event.preventDefault();
-                    const keyElement = document.getElementById(event.code);
-                    if (keyElement) {
-                        keyElement.classList.remove('pressing');
-                    }
-                    return false;
-                }
-                event.preventDefault();
-                const keyID = event.code;
-                let keysToActivate = [keyID];
-                if (doubleKeys[keyID]) {
-                    keysToActivate = doubleKeys[keyID];
-                }
-                keysToActivate.forEach(currentKeyID => {
-                    const keyElement = document.getElementById(currentKeyID);
-                    if (keyElement) {
-                        keyElement.classList.remove('pressing');
-                    }
-                });
-            }, true);
-            // DETECÇÃO BACKUP PARA PRINTSCREEN - AGORA COM CONTAGEM CORRETA
-            window.addEventListener('blur', () => {
-                setTimeout(() => {
-                    const keyElement = document.getElementById('PrintScreen');
-                    if (keyElement && keyPressCounts['PrintScreen'] < maxPresses) {
-                        printScreenPressCount++;
-                        keyElement.classList.add('pressing');
-                        if (printScreenPressCount >= maxPresses) {
-                            keyElement.classList.add('pressed');
-                            keyPressCounts['PrintScreen'] = maxPresses;
-                        } else {
-                            keyPressCounts['PrintScreen'] = printScreenPressCount;
-                        }
-                        checkAllKeysApproved();
-                    }
-                }, 50);
-            });
-            // FUNÇÃO AUXILIAR PARA ATIVAR TECLAS
-            function activateKey(keyID) {
-                const keyElement = document.getElementById(keyID);
-                if (keyElement) {
-                    if (keyPressCounts[keyID] < maxPresses) {
-                        keyElement.classList.add('pressing');
-                        if (keyPressCounts[keyID] === maxPresses - 1) {
-                            keyElement.classList.add('pressed');
-                            keyPressCounts[keyID]++;
-                        } else {
-                            keyPressCounts[keyID]++;
-                        }
-                }
-                    }
-            }
-            function checkAllKeysApproved() {
-                const allApproved = Array.from(keys).every(key =>
-                    key.id && (key.classList.contains('pressed') || key.classList.contains('already-approved'))
-                );
-                if (allApproved) {
-                    // Exibe a caixa de alerta simples
-                    document.getElementById('alert-modal').style.display = 'block';
+    const keys = document.querySelectorAll('.key, .numeric-key, .arrows-key, .key2');
+    const keyPressCounts = {};
+    const maxPresses = 5;
+    // Variáveis para controle de AltGr
+    let isAltGrPressed = false;
+    let lastKeyTime = 0;
+    let printScreenPressCount = 0;
+    // Mapeamento de teclas duplas (uma tecla física que ativa dois elementos visuais)
+    const doubleKeys = {
+        'Enter': ['Enter', 'Enter2'],
+        'NumpadEnter': ['NumpadEnter', 'NumpadEnter2'],
+        'NumpadAdd': ['NumpadAdd', 'NumpadAdd2']
+    };
+    keys.forEach(key => {
+        if (key.id) keyPressCounts[key.id] = 0;
+        key.addEventListener('click', (e) => e.preventDefault());
+    });
+    document.addEventListener('keydown', (event) => {
+        const currentTime = Date.now();
+        // TRATAMENTO ESPECIAL PARA PRINTSCREEN - AGORA PRECISA DE 5 VEZES
+        if (event.code === 'PrintScreen') {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+            printScreenPressCount++;
+            const keyElement = document.getElementById('PrintScreen');
+            if (keyElement) {
+                keyElement.classList.add('pressing');
+                if (printScreenPressCount >= maxPresses) {
+                    keyElement.classList.add('pressed');
+                    keyPressCounts['PrintScreen'] = maxPresses;
+                } else {
+                    keyPressCounts['PrintScreen'] = printScreenPressCount;
                 }
             }
-            // Fechar a caixa de alerta ao clicar nela
-            document.getElementById('alert-modal').addEventListener('click', function() {
-                this.style.display = 'none';
-            });
+            checkAllKeysApproved();
+            return false;
+        }
+        // TRATAMENTO ESPECIAL PARA ALTGR - EVITA ATIVAR AMBOS OS CTRL
+        if (event.code === 'AltRight' && event.location === 2) {
+            event.preventDefault();
+            isAltGrPressed = true;
+            lastKeyTime = currentTime;
+            activateKey('AltRight');
+            checkAllKeysApproved();
+            return false;
+        }
+        // BLOQUEAR CTRL ESQUERDO E DIREITO QUANDO ALTGR É PRESSIONADO
+        if ((event.code === 'ControlLeft' || event.code === 'ControlRight') &&
+            isAltGrPressed && (currentTime - lastKeyTime) < 100) {
+            event.preventDefault();
+            return false;
+        }
+        // TRATAMENTO ESPECIAL PARA CTRL DIREITO INDIVIDUAL
+        if (event.code === 'ControlRight' && !isAltGrPressed) {
+            event.preventDefault();
+            activateKey('ControlRight');
+            checkAllKeysApproved();
+            return false;
+        }
+        // TRATAMENTO ESPECIAL PARA CTRL ESQUERDO INDIVIDUAL
+        if (event.code === 'ControlLeft' && !isAltGrPressed) {
+            event.preventDefault();
+            activateKey('ControlLeft');
+            checkAllKeysApproved();
+            return false;
+        }
+        // RESTO DAS TECLAS NORMAIS
+        event.preventDefault();
+        const keyID = event.code;
+        let keysToActivate = [keyID];
+        if (doubleKeys[keyID]) {
+            keysToActivate = doubleKeys[keyID];
+        }
+        keysToActivate.forEach(currentKeyID => {
+            activateKey(currentKeyID);
         });
+        checkAllKeysApproved();
+    }, true);
+    document.addEventListener('keyup', (event) => {
+        // PRINTSCREEN
+        if (event.code === 'PrintScreen') {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+            const keyElement = document.getElementById('PrintScreen');
+            if (keyElement) {
+                keyElement.classList.remove('pressing');
+            }
+            return false;
+        }
+        // ALTGR
+        if (event.code === 'AltRight') {
+            event.preventDefault();
+            isAltGrPressed = false;
+            const keyElement = document.getElementById('AltRight');
+            if (keyElement) {
+                keyElement.classList.remove('pressing');
+            }
+            return false;
+        }
+        // CTRL ESQUERDO E DIREITO
+        if (event.code === 'ControlRight' || event.code === 'ControlLeft') {
+            event.preventDefault();
+            const keyElement = document.getElementById(event.code);
+            if (keyElement) {
+                keyElement.classList.remove('pressing');
+            }
+            return false;
+        }
+        event.preventDefault();
+        const keyID = event.code;
+        let keysToActivate = [keyID];
+        if (doubleKeys[keyID]) {
+            keysToActivate = doubleKeys[keyID];
+        }
+        keysToActivate.forEach(currentKeyID => {
+            const keyElement = document.getElementById(currentKeyID);
+            if (keyElement) {
+                keyElement.classList.remove('pressing');
+            }
+        });
+    }, true);
+    // DETECÇÃO BACKUP PARA PRINTSCREEN - AGORA COM CONTAGEM CORRETA
+    window.addEventListener('blur', () => {
+        setTimeout(() => {
+            const keyElement = document.getElementById('PrintScreen');
+            if (keyElement && keyPressCounts['PrintScreen'] < maxPresses) {
+                printScreenPressCount++;
+                keyElement.classList.add('pressing');
+                if (printScreenPressCount >= maxPresses) {
+                    keyElement.classList.add('pressed');
+                    keyPressCounts['PrintScreen'] = maxPresses;
+                } else {
+                    keyPressCounts['PrintScreen'] = printScreenPressCount;
+                }
+                checkAllKeysApproved();
+            }
+        }, 50);
+    });
+    // FUNÇÃO AUXILIAR PARA ATIVAR TECLAS
+    function activateKey(keyID) {
+        const keyElement = document.getElementById(keyID);
+        if (keyElement) {
+            if (keyPressCounts[keyID] < maxPresses) {
+                keyElement.classList.add('pressing');
+                if (keyPressCounts[keyID] === maxPresses - 1) {
+                    keyElement.classList.add('pressed');
+                    keyPressCounts[keyID]++;
+                } else {
+                    keyPressCounts[keyID]++;
+                }
+        }
+            }
+    }
+    
+    // ✅ FUNÇÃO CORRIGIDA - AGORA CONSIDERA TECLAS SEM ID E JÁ APROVADAS
+    function checkAllKeysApproved() {
+        const allApproved = Array.from(keys).every(key => {
+            // Se não tem ID, considera como aprovada (teclas decorativas)
+            if (!key.id || key.id === '') {
+                return true;
+            }
+            // Se tem ID, verifica se está pressionada ou já aprovada
+            return key.classList.contains('pressed') || key.classList.contains('already-approved');
+        });
+        
+        if (allApproved) {
+            // ✅ FORÇA A EXIBIÇÃO DO MODAL
+            const modal = document.getElementById('alert-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.style.visibility = 'visible';
+                modal.style.opacity = '1';
+                
+                // ✅ LOG PARA DEBUG
+                console.log('🎉 TODAS AS TECLAS APROVADAS! MODAL EXIBIDO!');
+            }
+        }
+    }
+    
+    // Fechar a caixa de alerta ao clicar nela
+    document.getElementById('alert-modal').addEventListener('click', function() {
+        this.style.display = 'none';
+        this.style.visibility = 'hidden';
+        this.style.opacity = '0';
+    });
+});
+
     </script>
 </body>
 </html>
