@@ -100,22 +100,22 @@
         }
         /* Correção para alinhamento do Enter2 */
         .enter2 {
-            margin-top: -1px;
+            margin-top: -1px; /* Ajusta alinhamento com a tecla acima */
         }
         .plus2 {
-            margin-top: -1px;
+            margin-top: -1px; /* Ajusta alinhamento com a tecla acima */
         }
         /* Diminuir o tamanho do shift direito e da tecla ? / */
         .shift-small {
-            width: 57px !important;
+            width: 57px !important; /* Shift direito menor */
             min-width: 57px !important;
         }
         .slash-small {
-            width: 57px !important;
+            width: 57px !important; /* Tecla ? / menor */
             min-width: 57px !important;
         }
 
-        /* Caixa de Alerta Modal Simples */
+        /* Caixa de Alerta Simples */
         .alert-modal {
             display: none;
             position: fixed;
@@ -146,13 +146,6 @@
     </style>
 </head>
 <body>
-    <!-- Caixa de Alerta Modal -->
-    <div id="alert-modal" class="alert-modal">
-        <div class="alert-box">
-            <h2>TECLADO APROVADO</h2>
-        </div>
-    </div>
-
     <div class="header">
         <!-- Imagem da logo -->
         <img src="./teclado/logoavell.png" alt="Descrição da Imagem">
@@ -163,13 +156,11 @@
             Voltar
         </button>
     </div>
-
     <div class="todo">
         <div class="row">
             <br><br><br><br><br>
             <div class="col-md-8"></div>
         </div>
-
         <div class="row alert-screen">
             <div class="col-12">
                 <p><i class="fas fa-exclamation-triangle"></i> Desculpe! Não podemos executar o teste em dispositivos móveis. Para correto funcionamento, recomendamos usar um PC ou notebook.</p>
@@ -193,15 +184,17 @@
                             <div id="F10" class="key function">F10</div>
                             <div id="F11" class="key function">F11</div>
                             <div id="F12" class="key function">F12</div>
-                            <div id="PrintScreen" class="key function small">PRT SC<br>INSERT</div>
-                            <div id="Pause" class="key function small">PAUSE<br>BREAK</div>
-                            <div id="Delete" class="key function small">DEL</div>
-                            <div id="End" class="key function2 small">END</div>
-                            <div id="NumpadAdd" class="key plus1 small">+</div>
-                            <div id="NumpadSubtract" class="numeric-key small">-</div>
+                            <div id="PrintScreen" class="key function small">PrntSc<br>SysRq</div>
+                            <div id="Insert" class="key function small">Ins<br>ScrLk</div>
+                            <div id="Delete" class="key function small">Del</div>
+                            <div id="Home" class="key function2 small">Home</div>
+                            <div id="End" class="key function2 small">End</div>
+                            <div id="PageUp" class="key function2 small">PgUp<br>Pause</div>
+                            <div id="PageDown" class="key function2 small">PgDn<br>Break</div>
                         </div>
+                        <!--END FUNCTION KEYS -->
                         <div class="d-flex flex-row bd-highlight">
-                            <div id="Backquote" class="key">"<br><br>`</div>
+                            <div id="Backquote" class="key">~<br>|>/||<br>`</div>
                             <div id="Digit1" class="key num">!<br>1</div>
                             <div id="Digit2" class="key num">@<br>2</div>
                             <div id="Digit3" class="key num">#<br>3</div>
@@ -215,15 +208,17 @@
                             <div id="Minus" class="key num">_<br>-</div>
                             <div id="Equal" class="key num">+<br>=</div>
                             <div id="Backspace" class="key backspace">Backspace</div>
-                            <div id="NumLock" class="numeric-key numeric-nl">NUM</div>
+                            <div id="NumLock" class="numeric-key numeric-nl">Num Lk</div>
                             <div id="NumpadDivide" class="numeric-key">/</div>
                             <div id="NumpadMultiply" class="numeric-key">*</div>
+                            <div id="NumpadSubtract" class="numeric-key">-</div>
                         </div>
+                        <!--END NUMBER KEYS -->
                         <div class="d-flex flex-row bd-highlight">
-                            <div id="Tab" class="key tab">TAB</div>
-                            <div id="KeyQ" class="key">Q <br> <br>/</div>
-                            <div id="KeyW" class="key">W<br><br>?</div>
-                            <div id="KeyE" class="key">E<br><br>º</div>
+                            <div id="Tab" class="key tab">Tab</div>
+                            <div id="KeyQ" class="key">Q</div>
+                            <div id="KeyW" class="key">W</div>
+                            <div id="KeyE" class="key">E</div>
                             <div id="KeyR" class="key">R</div>
                             <div id="KeyT" class="key">T</div>
                             <div id="KeyY" class="key">Y</div>
@@ -237,9 +232,10 @@
                             <div id="Numpad7" class="numeric-key">7 <br> <span class="numeric-special-key">Home</span></div>
                             <div id="Numpad8" class="numeric-key">8 <br> &uarr;</div>
                             <div id="Numpad9" class="numeric-key">9 <br> <span class="numeric-special-key">Pg Up </span></div>
+                            <div id="NumpadAdd" class="key plus1">+</div>
                         </div>
                         <div class="d-flex flex-row bd-highlight">
-                            <div id="CapsLock" class="key caps">FIXA</div>
+                            <div id="CapsLock" class="key caps">Caps<br>Lock</div>
                             <div id="KeyA" class="key">A</div>
                             <div id="KeyS" class="key">S</div>
                             <div id="KeyD" class="key">D</div>
@@ -256,10 +252,11 @@
                             <div id="Numpad4" class="numeric-key">4 <br> &larr;</div>
                             <div id="Numpad5" class="numeric-key">5</div>
                             <div id="Numpad6" class="numeric-key">6 <br> &rarr;</div>
+                            <div id="NumpadComma" class="key plus1">.</div>
                         </div>
                         <div class="d-flex flex-row bd-highlight">
-                            <div id="ShiftLeft" class="key shift2">Shift</div>
-                            <div id="IntlBackslash" class="key">\<br><br>|</div>
+                            <div id="ShiftLeft" class="key shift1">Shift</div>
+                            <div id="IntlBackslash" class="key">\</div>
                             <div id="KeyZ" class="key">Z</div>
                             <div id="KeyX" class="key">X</div>
                             <div id="KeyC" class="key">C</div>
@@ -270,11 +267,13 @@
                             <div id="Comma" class="key">&lt; <br>,</div>
                             <div id="Period" class="key">&gt;<br>.</div>
                             <div id="Slash" class="key Slash">:<br>;</div>
-                            <div id="ShiftRight" class="key shift2">Shift</div>
+                            <div id="IntlRo" class="key slash-small">?<br>/</div>
+                            <div id="ShiftRight" class="key shift-small">Shift</div>
                             <div id="ArrowUp" class="arrows-key">&uarr;</div>
                             <div id="Numpad1" class="numeric-key">1 <br> <span class="numeric-special-key">End</span></div>
                             <div id="Numpad2" class="numeric-key">2 <br> &darr;</div>
                             <div id="Numpad3" class="numeric-key">3 <br> <span class="numeric-special-key">Pg Dn</span></div>
+                            <div id="NumpadEnter" class="key plus1">Enter</div>
                         </div>
                         <div class="d-flex flex-row bd-highlight">
                             <div id="ControlLeft" class="key modify-keys">Ctrl</div>
@@ -290,6 +289,7 @@
                             <div id="ArrowRight" class="arrows-key">&rarr;</div>
                             <div id="Numpad0" class="numeric-key">0 <br> <span class="numeric-special-key">INS</span></div>
                             <div id="NumpadDecimal" class="numeric-key">,<br> <span class="numeric-special-key">DEL</span></div>
+                            <div id="NumpadEnter2" class="key plus2"></div>
                         </div>
                     </div>
                 </div>
@@ -297,42 +297,43 @@
         </div>
     </div>
 
+    <!-- Caixa de Alerta Simples -->
+    <div id="alert-modal" class="alert-modal">
+        <div class="alert-box">
+            <h2>TECLADO APROVADO</h2>
+        </div>
+    </div>
+
     <div class="footer">
         <p>&copy; 2025 Inovação e Desenvolvimento</p>
         <img src="avell.ico" alt="Imagem da Nota de Rodapé">
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const keys = document.querySelectorAll('.key, .numeric-key, .arrows-key, .key2');
             const keyPressCounts = {};
             const maxPresses = 5;
+            
+            // Variáveis para controle de AltGr
             let isAltGrPressed = false;
             let lastKeyTime = 0;
             let printScreenPressCount = 0;
 
-            // TECLAS DUPLAS - TRATAMENTO ESPECIAL
+            // Mapeamento de teclas duplas (uma tecla física que ativa dois elementos visuais)
             const doubleKeys = {
                 'Enter': ['Enter', 'Enter2'],
-                'NumpadAdd': ['NumpadAdd', 'plus2']
+                'NumpadEnter': ['NumpadEnter', 'NumpadEnter2']
             };
 
-            // INICIALIZAÇÃO
             keys.forEach(key => {
                 if (key.id) keyPressCounts[key.id] = 0;
                 key.addEventListener('click', (e) => e.preventDefault());
             });
 
-            // KEYDOWN - DETECTA QUANDO A TECLA É PRESSIONADA
             document.addEventListener('keydown', (event) => {
                 const currentTime = Date.now();
                 
-                // PREVINE COMPORTAMENTO PADRÃO DAS TECLAS DE FUNÇÃO
-                if (/^F\d{1,2}$/.test(event.key)) {
-                    event.preventDefault();
-                }
-
-                // TRATAMENTO ESPECIAL PARA PRINTSCREEN
+                // TRATAMENTO ESPECIAL PARA PRINTSCREEN - AGORA PRECISA DE 5 VEZES
                 if (event.code === 'PrintScreen') {
                     event.preventDefault();
                     event.stopPropagation();
@@ -354,7 +355,7 @@
                     return false;
                 }
 
-                // TRATAMENTO ESPECIAL PARA ALTGR
+                // TRATAMENTO ESPECIAL PARA ALTGR - EVITA ATIVAR AMBOS OS CTRL
                 if (event.code === 'AltRight' && event.location === 2) {
                     event.preventDefault();
                     isAltGrPressed = true;
@@ -365,14 +366,14 @@
                     return false;
                 }
 
-                // BLOQUEAR CTRL QUANDO ALTGR É PRESSIONADO
+                // BLOQUEAR CTRL ESQUERDO E DIREITO QUANDO ALTGR É PRESSIONADO
                 if ((event.code === 'ControlLeft' || event.code === 'ControlRight') && 
                     isAltGrPressed && (currentTime - lastKeyTime) < 100) {
                     event.preventDefault();
                     return false;
                 }
 
-                // TRATAMENTO ESPECIAL PARA CTRL DIREITO
+                // TRATAMENTO ESPECIAL PARA CTRL DIREITO INDIVIDUAL
                 if (event.code === 'ControlRight' && !isAltGrPressed) {
                     event.preventDefault();
                     activateKey('ControlRight');
@@ -380,7 +381,7 @@
                     return false;
                 }
 
-                // TRATAMENTO ESPECIAL PARA CTRL ESQUERDO
+                // TRATAMENTO ESPECIAL PARA CTRL ESQUERDO INDIVIDUAL
                 if (event.code === 'ControlLeft' && !isAltGrPressed) {
                     event.preventDefault();
                     activateKey('ControlLeft');
@@ -404,7 +405,6 @@
                 checkAllKeysApproved();
             }, true);
 
-            // KEYUP - DETECTA QUANDO A TECLA É SOLTA
             document.addEventListener('keyup', (event) => {
                 // PRINTSCREEN
                 if (event.code === 'PrintScreen') {
@@ -457,7 +457,7 @@
                 });
             }, true);
 
-            // DETECÇÃO BACKUP PARA PRINTSCREEN
+            // DETECÇÃO BACKUP PARA PRINTSCREEN - AGORA COM CONTAGEM CORRETA
             window.addEventListener('blur', () => {
                 setTimeout(() => {
                     const keyElement = document.getElementById('PrintScreen');
@@ -494,19 +494,18 @@
                 }
             }
 
-            // VERIFICAR SE TODAS AS TECLAS FORAM APROVADAS
             function checkAllKeysApproved() {
                 const allApproved = Array.from(keys).every(key => 
                     key.id && key.classList.contains('pressed')
                 );
                 
                 if (allApproved) {
-                    // Exibe a caixa de alerta modal
+                    // Exibe a caixa de alerta simples
                     document.getElementById('alert-modal').style.display = 'block';
                 }
             }
 
-            // FECHAR A CAIXA DE ALERTA AO CLICAR NELA
+            // Fechar a caixa de alerta ao clicar nela
             document.getElementById('alert-modal').addEventListener('click', function() {
                 this.style.display = 'none';
             });
