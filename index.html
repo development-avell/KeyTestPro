@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="avell.ico">
+    <title>Avell KeyTest Pro</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: url('./fotos/fundof.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .top-bar {
+            background-color: #000;
+            color: white;
+            padding: 10px 15px;
+            position: fixed;
+            width: 100%;
+            z-index: 2;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            top: 0;
+            left: 0;
+        }
+        .menu-button {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            color: white;
+        }
+        .logo {
+            height: 45px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .layout {
+            display: flex;
+            margin-top: 65px;
+            height: calc(100vh - 130px);
+            overflow: hidden;
+        }
+        .side-nav {
+            width: 250px;
+            background-color: #000;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease-out;
+            border-top-right-radius: 10px;
+            flex-shrink: 0;
+            height: 100%;
+        }
+        .side-nav:not(.active) {
+            transform: translateX(-250px);
+        }
+        .side-nav button {
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 5px 15px;
+            background-color: #0085f8;
+            border: none;
+            cursor: pointer;
+            width: 80%;
+            text-align: left;
+            outline: none;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .side-nav button:hover {
+            background-color: #006abf;
+            transform: translateX(10px);
+        }
+        .models {
+            display: none;
+            overflow-y: auto;
+            background-color: #1c2340;
+            margin-left: 15px;
+            padding: 0 20px 10px;
+            border-left: 3px solid #fff;
+            border-radius: 0 0 10px 10px;
+        }
+        .models.open {
+            display: block;
+        }
+        .models button {
+            background-color: #0085f8;
+            margin: 5px 0;
+            padding: 8px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            color: #e1e5f2;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .models button:hover {
+            background-color: #006abf;
+            transform: translateX(5px);
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 10px;
+            flex-grow: 1;
+            margin-left: 250px;
+            overflow: hidden;
+        }
+        .content {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .content img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .caption {
+            padding: 10px;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            color: white;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+        .footer img {
+            height: 30px;
+            margin-left: 20px;
+        }
+        .right-nav {
+            width: 800px;
+            background-color: #000;
+            box-shadow: -2px 0 15px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 65px;
+            right: 0;
+            z-index: 2;
+            height: calc(100vh - 130px);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .right-nav.active {
+            transform: translateX(0);
+        }
+        .carousel {
+            width: 100%;
+            text-align: center;
+        }
+        .carousel img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+        }
+        .carousel-controls button {
+            margin: 10px;
+            background-color: #0085f8;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .carousel-controls button:hover {
+            background-color: #006abf;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <button class="menu-button" onclick="toggleMenu()">&#9776; Menu de Teclados</button>
+        <img src="avell.png" alt="Logo Avell" class="logo">
+        <button class="menu-button" onclick="toggleRightNav()">Explore &#127760;</button>
+    </div>
+    <div class="layout">
+        <div id="sideNav" class="side-nav">
+            <!-- Conteúdo do menu lateral esquerdo -->
+            <button class="family-button" onclick="toggleModels('B.ON')">B.ON <span>&#9654;</span></button>
+            <div id="B.ON" class="models">
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">145</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">145 ABNT</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">147</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">147 ABNT</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">16H</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">16HS</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">LITE NEW</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">SMART</button>
+            </div>
+            <button class="family-button" onclick="toggleModels('HYB')">HYB <span>&#9654;</span></button>
+            <div id="HYB" class="models">
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A50</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A50i</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A52 1650</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A52i</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A52 NEW</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A52r</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A55</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A57</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A70</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A70 BS</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A72</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">C65</button>
+            </div>
+            <button class="family-button" onclick="toggleModels('ION')">ION <span>&#9654;</span></button>
+            <div id="ION" class="models">
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A52</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A52i</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A65</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A65i</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A70</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A70i</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A72</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A74</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A80i</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A90i</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">D58i</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">D68i</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">D68i ESP</button>
+            </div>
+            <button class="family-button" onclick="toggleModels('STORM')">STORM <span>&#9654;</span></button>
+            <div id="STORM" class="models">
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">305 CL</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">305 AI</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">350</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">350r</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">450</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">450r</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">460</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">470</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">480</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">490</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">570 TI</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">580</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">590X</button>
+            </div>
+            <button class="family-button" onclick="toggleModels('MOB')">MOB <span>&#9654;</span></button>
+            <div id="MOB" class="models">
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A52</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A55</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A57</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">A65</button>
+                <button class="model-button" onclick="location.href='./IDE-ST/teclado.html'">A70</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">B11</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">C62</button>
+                <button class="model-button" onclick="alert('Modelo de teclado não cadastrado.')">C65</button>
+            </div>
+            <button class="family-button" onclick="toggleModels('LIV')">LIV <span>&#9654;</span></button>
+            <div id="LIV" class="models">
+                <button class="model-button" onclick="alert('Se necessário, contatar Inácio.')">...</button>
+            </div>
+            <button class="family-button" onclick="toggleModels('MUV')">MUV <span>&#9654;</span></button>
+            <div id="MUV" class="models">
+                <button class="model-button" onclick="alert('Se necessário, contatar Inácio.')">...</button>
+            </div>
+        </div>
+        <!-- Menu lateral direito para o carrossel de imagens -->
+        <div id="rightNav" class="right-nav">
+            <div class="carousel">
+                <a id="carouselLink" href="#" target="_blank">
+                    <img id="carouselImage" src="" alt="Imagem do Carrossel">
+                </a>
+                <div class="caption" id="carouselCaption"></div>
+                <div class="carousel-controls">
+                    <button onclick="prevImage()">&#10094; Anterior</button>
+                    <button onclick="nextImage()">Próxima &#10095;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid-container">
+        <!-- Imagens e legendas em grade 4x4 
+        <div class="content">
+            <a href="https://www.instagram.com/p/DG1Wlp_N2W2/" target="_blank">
+                <img src="./fotos/1.jpeg" alt="Imagem 1">
+                <div class="caption">O combo perfeito existe! E você monta ele aqui: monitores, mouses, headsets e muito mais para deixar seu Avell ainda mais poderoso.</div>
+            </a>
+        </div>
+        <div class="content">
+            <a href="https://www.instagram.com/p/DHt46NxvJf3/" target="_blank">
+                <img src="./fotos/2.jpeg" alt="Imagem 2">
+                <div class="caption">Unboxing do headset gamer Volcanos H39! 🎧🔥</div>
+            </a>
+        </div>
+        <div class="content">
+            <a href="https://www.instagram.com/p/DHUJRNpp7Cn/?img_index=1" target="_blank">
+                <img src="./fotos/3.jpeg" alt="Imagem 3">
+                <div class="caption">Com a mochila Avell Grit Blue, estilo e mobilidade se encontram. Compacta e resistente, é perfeita para quem vive a rotina com praticidade e elegância! ✨</div>
+            </a>
+        </div>
+        <div class="content">
+            <a href="https://www.instagram.com/p/DIJXCV1tkgA/" target="_blank">
+                <img src="./fotos/4.jpeg" alt="Imagem 4">
+                <div class="caption">SSD NVMe Gen 4 no seu Avell = Inicialização em segundos, transferências absurdamente rápidas e fluxo de trabalho sem interrupções.</div>
+            </a>
+        </div>
+        <div class="content">
+            <a href="https://www.youtube.com/watch?v=fMs8rAfkT0Q" target="_blank">
+                <img src="./fotos/5.jpeg" alt="Imagem 5">
+                <div class="caption">Precisa de potência máxima? Ative o Modo Turbo no Avell Custom Control. 🔥</div>
+            </a>
+        </div>
+        <div class="content">
+            <a href="https://www.instagram.com/p/DKKGxi9MHdx/" target="_blank">
+                <img src="./fotos/6.jpeg" alt="Imagem 6">
+                <div class="caption">Projetar com fluidez não é luxo. É o que se espera de uma máquina feita pra acompanhar o seu ritmo. 💻</div>
+            </a>
+        </div>
+        <div class="content">
+            <a href="https://avell.com.br/" target="_blank">
+                <img src="./fotos/7.jpeg" alt="Imagem 7">
+                <div class="caption">Você pediu mais poder, a gente trouxe!</div>
+            </a>
+        </div>
+        <div class="content">
+            <a href="https://www.instagram.com/p/DHYcJPNInhX/?img_index=1" target="_blank">
+                <img src="./fotos/8.jpeg" alt="Imagem 8">
+                <div class="caption">Seu consultório ganha + potência e agilidade! 💻</div>
+            </a>
+        </div>
+		-->
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 Inovação e Desenvolvimento</p>
+        <img src="avell.ico" alt="Imagem da Nota de Rodapé">
+    </div>
+    <script>
+        const carouselImages = [
+            {
+                src: './fotos/1.jpeg',
+                caption: 'O combo perfeito existe! E você monta ele aqui: monitores, mouses, headsets e muito mais para deixar seu Avell ainda mais poderoso.',
+                link: 'https://www.instagram.com/p/DG1Wlp_N2W2/'
+            },
+            {
+                src: './fotos/2.jpeg',
+                caption: 'Unboxing do headset gamer Volcanos H39! 🎧🔥',
+                link: 'https://www.instagram.com/p/DHt46NxvJf3/'
+            },
+            {
+                src: './fotos/3.jpeg',
+                caption: 'Com a mochila Avell Grit Blue, estilo e mobilidade se encontram. Compacta e resistente, é perfeita para quem vive a rotina com praticidade e elegância! ✨',
+                link: 'https://www.instagram.com/p/DHUJRNpp7Cn/?img_index=1'
+            },
+            {
+                src: './fotos/4.jpeg',
+                caption: 'SSD NVMe Gen 4 no seu Avell = Inicialização em segundos, transferências absurdamente rápidas e fluxo de trabalho sem interrupções.',
+                link: 'https://www.instagram.com/p/DIJXCV1tkgA/'
+            },
+            {
+                src: './fotos/5.jpeg',
+                caption: 'Precisa de potência máxima? Ative o Modo Turbo no Avell Custom Control. 🔥',
+                link: 'https://www.youtube.com/watch?v=fMs8rAfkT0Q'
+            },
+            {
+                src: './fotos/6.jpeg',
+                caption: 'Projetar com fluidez não é luxo. É o que se espera de uma máquina feita pra acompanhar o seu ritmo. 💻',
+                link: 'https://www.instagram.com/p/DKKGxi9MHdx/'
+            },
+            {
+                src: './fotos/7.jpeg',
+                caption: 'Você pediu mais poder, a gente trouxe!',
+                link: 'https://avell.com.br/'
+            },
+            {
+                src: './fotos/8.jpeg',
+                caption: 'Seu consultório ganha + potência e agilidade! 💻',
+                link: 'https://www.instagram.com/p/DHYcJPNInhX/?img_index=1'
+            }
+        ];
+        let currentImageIndex = 0;
+
+        function updateCarousel() {
+            const image = document.getElementById('carouselImage');
+            const caption = document.getElementById('carouselCaption');
+            const link = document.getElementById('carouselLink');
+            const { src, caption: text, link: href } = carouselImages[currentImageIndex];
+            image.src = src;
+            image.alt = 'Imagem ' + (currentImageIndex + 1);
+            caption.textContent = text;
+            link.href = href;
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % carouselImages.length;
+            updateCarousel();
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + carouselImages.length) % carouselImages.length;
+            updateCarousel();
+        }
+
+        function toggleMenu() {
+            const sideNav = document.getElementById('sideNav');
+            sideNav.classList.toggle('active');
+        }
+
+        function toggleModels(familyId) {
+            const element = document.getElementById(familyId);
+            element.classList.toggle('open');
+
+            const familyButtons = document.querySelectorAll('.family-button');
+
+            familyButtons.forEach((btn) => {
+                const span = btn.querySelector('span');
+                if (btn.textContent.includes(familyId)) {
+                    span.innerHTML = element.classList.contains('open') ? '&#9660;' : '&#9654;';
+                } else {
+                    span.innerHTML = '&#9654;';
+                }
+            });
+        }
+
+        function toggleRightNav() {
+            const rightNav = document.getElementById('rightNav');
+            rightNav.classList.toggle('active');
+            if (rightNav.classList.contains('active')) {
+                updateCarousel();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateCarousel();
+            const logo = document.querySelector('.logo');
+            const footerImage = document.querySelector('.footer img');
+            logo?.addEventListener('click', () => {
+                window.open('https://www.avell.com.br', '_blank');
+            });
+            footerImage?.addEventListener('click', () => {
+                window.open('https://www.avell.com.br', '_blank');
+            });
+        });
+    </script>
+</body>
+</html>

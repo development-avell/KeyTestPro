@@ -1,0 +1,85 @@
+window.addEventListener('load', () => {
+    start();
+});
+
+function start() {
+    render();
+}
+
+function render() {
+    handleKeyPress();
+}
+
+function handleKeyPress() {
+    const keyStates = {};
+
+    document.addEventListener('keydown', (event) => {
+        event.preventDefault();
+        // Change to red on keydown
+        const keyElement = document.getElementById(event.code);
+        if (keyElement) {
+            keyElement.style.backgroundColor = 'red';
+        }
+        handleSpecialKeys(event.code, 'red');
+    });
+
+    document.addEventListener('keyup', (event) => {
+        event.preventDefault();
+        const keyElement = document.getElementById(event.code);
+
+        if (keyElement) {
+            keyStates[event.code] = (keyStates[event.code] || 0) + 1;
+
+            switch (keyStates[event.code] % 3) {
+                case 1:
+                    keyElement.style.backgroundColor = 'yellow';
+                    break;
+                case 2:
+                    keyElement.style.backgroundColor = 'blue';
+                    break;
+                case 0:
+                    keyElement.style.backgroundColor = 'green';
+                    break;
+            }
+        }
+        handleSpecialKeys(event.code);
+    });
+
+    function handleSpecialKeys(code, color = '') {
+        if (code === 'Enter') {
+            updateSpecialKey('Enter2', color);
+        }
+        if (code === 'NumpadAdd') {
+            updateSpecialKey('NumpadAdd2', color);
+        }
+        if (code === 'NumpadEnter') {
+            updateSpecialKey('NumpadEnter2', color);
+        }
+    }
+
+    function updateSpecialKey(keyId, color) {
+        const keyElement = document.getElementById(keyId);
+
+        if (!keyElement) return;
+
+        if (color) {
+            keyElement.style.backgroundColor = color; // Use color if provided (as in 'red' for press)
+            return;
+        }
+
+        // Proceed with cycling through colors if no color specifically given
+        keyStates[keyId] = (keyStates[keyId] || 0) + 1;
+
+        switch (keyStates[keyId] % 3) {
+            case 1:
+                keyElement.style.backgroundColor = 'yellow';
+                break;
+            case 2:
+                keyElement.style.backgroundColor = 'blue';
+                break;
+            case 0:
+                keyElement.style.backgroundColor = 'green';
+                break;
+        }
+    }
+}
